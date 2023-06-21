@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Warehouse Mobile Statistics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+</head>
+<body style="overflow: hidden;">
+    <div id="echarts" style="height: 100vh; width: 100vw; position: absolute;"></div>
+    <script>
+        const chart_container = document.getElementById('echarts');
+        const chart_height = chart_container.offsetHeight;
+        const chart_width = chart_container.offsetWidth;
+
+        function generate_options() {
+            return {
+                title: {text: '{{ username }} Warehouse service usage', left: 'center', top: '0.5%'},
+                tooltip: {trigger: 'axis', axisPointer: {animation: false}},
+                toolbox: {
+                    feature: {
+                        dataZoom: {yAxisIndex: 'none'},
+                        restore: {},
+                        saveAsImage: {},
+                        myBackButton: {
+                            show: true,
+                            title: 'Back',
+                            icon: 'path://M512 512m-341.333333 0a341.333333 341.333333 0 1 0 682.666666 0 341.333333 ' +
+                                '341.333333 0 0 0-682.666666 0Z m170.666667 0a170.666667 170.666667 0 1 1 341.333333 ' +
+                                '0 170.666667 170.666667 0 0 1-341.333333 0Z m0-85.333333a85.333333 85.333333 0 1 0 ' +
+                                '170.666666 0 85.333333 85.333333 0 0 0-170.666666 0Z',
+                            onclick: () => { window.location.href = '/'; }
+                        },
+                    },
+                    right: '1%',
+                },
+                axisPointer: {link: [{xAxisIndex: 'all'}]},
+                grid: [
+                    {left: '4%', right: '3%', height: '85%', width: '41%'},
+                    {left: '50%', right: '3%', height: '40%', width: '47%'},
+                    {left: '50%', right: '3%', top: '55%', height: '40%', width: '47%'}
+                ],
+                xAxis: [
+                    {type: 'category', boundaryGap: true, axisLine: {onZero: true}, data: {{ month | safe }}},
+                    {gridIndex: 1, type: 'category', boundaryGap: true, axisLine: {onZero: true}, data: {{ month | safe }}},
+                    {gridIndex: 2, type: 'category', boundaryGap: true, axisLine: {onZero: true}, data: {{ month | safe }}}
+                ],
+                yAxis: [
+                    {gridIndex: 0, name: 'Data (MB)', type: 'value'},
+                    {gridIndex: 0, name: 'Fee (NZD)', type: 'value', position: 'right', splitLine: {show: false}},
+                    {gridIndex: 1, name: 'Call (Minutes)', type: 'value'},
+                    {gridIndex: 1, name: 'Fee (NZD)', type: 'value', position: 'right', splitLine: {show: false}},
+                    {gridIndex: 2, name: 'Text', type: 'value'},
+                    {gridIndex: 2, name: 'Fee (NZD)', type: 'value', position: 'right', splitLine: {show: false}}
+                ],
+                series: [
+                    {name: 'Data (MB)', type: 'line', xAxisIndex: 0, yAxisIndex: 0, symbolSize: 8, data: {{ data_usage | safe }}, areaStyle: {opacity: 0.3}},
+                    {name: 'Data fee (NZD)', type: 'bar', xAxisIndex: 0, yAxisIndex: 1, symbolSize: 8, data: {{ data_fee | safe }}, areaStyle: {opacity: 0.3}},
+                    {name: 'Call (Minutes)', type: 'line', xAxisIndex: 1, yAxisIndex: 2, symbolSize: 8, data: {{ call_usage | safe }}, areaStyle: {opacity: 0.3}},
+                    {name: 'Call fee (NZD)', type: 'bar', xAxisIndex: 1, yAxisIndex: 3, symbolSize: 8, data: {{ call_fee | safe }}, areaStyle: {opacity: 0.3}},
+                    {name: 'Text', type: 'line', xAxisIndex: 2, yAxisIndex: 4, symbolSize: 8, data: {{ text_usage | safe }}, areaStyle: {opacity: 0.3}},
+                    {name: 'Text fee (NZD)', type: 'bar', xAxisIndex: 2, yAxisIndex: 5, symbolSize: 8, data: {{ text_fee | safe }}, areaStyle: {opacity: 0.3}}
+                ]
+            }
+        }
+
+        const chart = echarts.init(chart_container);
+        chart.resize({width: chart_width - 1, height: chart_height - 1});
+        const options = generate_options();
+        chart.setOption(options);
+    </script>
+</body>
+</html>

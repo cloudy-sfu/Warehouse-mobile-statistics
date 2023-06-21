@@ -1,28 +1,51 @@
-# Warehouse Mobile Statistics
+# Warehouse mobile statistics
 
  Statistics the usage of warehouse mobile data, call, and text
 
-![](https://shields.io/badge/dependencies-Python%203.10-blue)
+![](https://shields.io/badge/dependencies-Python_3.11-blue)
 
 ## Introduction
 
-Warehouse mobile provides detailed information for customers on their website, as the following picture.
+Warehouse mobile provides detailed usage information on their website. However, we cannot check the sum of data, texts, and phone call did we use. It also doesn't allow copying text directly from the web page, and we're hard to statistic. This program is a tool to statistics the usage of warehouse mobile service.
 
-![](./assets/warehouse_mobile_website.jpg)
-
-However, it doesn't provide a statistics function and let customers to check how much data, how many texts, and how long of phone call did they use. Moreover, it forbids copying text directly from the web page, making it harder to statistics.
-
-This program is a tool to statistics the usage of warehouse mobile service. The results are shown like the following picture.
-
-![](./assets/statistical_results.png)
-
-When you use this software for the first time, it takes several minutes to download data from warehouse mobile website. After that, it updates the data of current month only, and it will not take much time.
+<details>
+    <summary>Screenshot</summary>
+    <img src="assets/image-20230821210318370.png" alt="Warehouse usage history">
+</details>
 
 ## Usage
 
-1.   Unzip the released software.
-2.   Find `main/Warehouse Mobile Statistics.exe` and open it.
+**Source code:**
 
-This software does not preserve your password, but it preserves your username and usage records. If you want to clear your personal data, delete everything in `raw/` directory in the installation root directory.
+1. Set the project root as the current folder in terminal. 
 
-To clear the cache: delete `raw/` directory in root directory of this program.
+2. Activate Python virtual environment if applicable.
+
+3. Run the following script. 
+
+   ```bash
+   pip install -r requirements.txt
+   # pyi-makespec app.py  # generate app.spec
+   python -m flask run 
+   ```
+
+It occupies localhost 5000 port by default.
+
+- [Customize host of Flask application](https://flask.palletsprojects.com/en/2.3.x/quickstart/)
+- [Customize port of Flask application](https://flask.palletsprojects.com/en/2.3.x/server/#address-already-in-use)
+
+**Release:**
+
+1. Download and unzip the release.
+2. Open `Warehouse Mobile Statistics.exe`.
+3. We preserve your password in a SQLite3 database locally, default address is `warehouse_mobile.db` of the project root.
+4. When using this software for the first time, it takes several minutes to download data from warehouse mobile website.
+
+<details>
+    <summary>Screenshot</summary>
+    <img src="assets/image-20230821205008920.png" alt="Warehouse service usage report">
+</details>
+
+**Update from previous version (after v0.2.0):**
+
+Copy `warehouse_mobile.db` to the project root of new version, otherwise you will lose your data.
